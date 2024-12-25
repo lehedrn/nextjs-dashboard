@@ -217,7 +217,7 @@ export async function fetchFilteredCustomers(query: string) {
       total_pending: formatCurrency(customer.total_pending),
       total_paid: formatCurrency(customer.total_paid),
     }));
-
+    console.log(customers)
     return customers;
   } catch (err) {
     console.error('Database Error:', err);
