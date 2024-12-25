@@ -9,10 +9,11 @@ import {
 } from './definitions';
 import { formatCurrency } from './utils';
 
+const client = await db.connect();
 
 export async function fetchRevenue() {
   try {
-    const client = await db.connect();
+    
     // Artificially delay a response for demo purposes.
     // Don't do this in production :)
 
@@ -32,7 +33,6 @@ export async function fetchRevenue() {
 
 export async function fetchLatestInvoices() {
   try {
-    const client = await db.connect();
     const data = await client.sql<LatestInvoiceRaw>`
       SELECT invoices.amount, customers.name, customers.image_url, customers.email, invoices.id
       FROM invoices
@@ -53,7 +53,6 @@ export async function fetchLatestInvoices() {
 
 export async function fetchCardData() {
   try {
-    const client = await db.connect();
     // You can probably combine these into a single SQL query
     // However, we are intentionally splitting them to demonstrate
     // how to initialize multiple queries in parallel with JS.
@@ -95,7 +94,6 @@ export async function fetchFilteredInvoices(
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
   try {
-    const client = await db.connect();
     const invoices = await client.sql<InvoicesTable>`
       SELECT
         invoices.id,
@@ -126,7 +124,6 @@ export async function fetchFilteredInvoices(
 
 export async function fetchInvoicesPages(query: string) {
   try {
-    const client = await db.connect();
     const count = await client.sql`SELECT COUNT(*)
     FROM invoices
     JOIN customers ON invoices.customer_id = customers.id
@@ -148,7 +145,6 @@ export async function fetchInvoicesPages(query: string) {
 
 export async function fetchInvoiceById(id: string) {
   try {
-    const client = await db.connect();
     const data = await client.sql<InvoiceForm>`
       SELECT
         invoices.id,
@@ -174,7 +170,6 @@ export async function fetchInvoiceById(id: string) {
 
 export async function fetchCustomers() {
   try {
-    const client = await db.connect();
     const data = await client.sql<CustomerField>`
       SELECT
         id,
@@ -193,7 +188,6 @@ export async function fetchCustomers() {
 
 export async function fetchFilteredCustomers(query: string) {
   try {
-    const client = await db.connect();
     const data = await client.sql<CustomersTableType>`
 		SELECT
 		  customers.id,
